@@ -28,6 +28,9 @@ defmodule ConduitAppsignal.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:conduit, "~> 0.8.0"},
+      {:appsignal, "~> 1.2"}
+    ]
   end
 end
