@@ -2,12 +2,26 @@ defmodule ConduitAppsignal.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :conduit_appsignal,
-     version: "0.1.0",
-     elixir: "~> 1.4",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps()]
+    [
+      app: :conduit_appsignal,
+      version: "0.1.0",
+      elixir: "~> 1.4",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+
+      # Docs
+      name: "ConduitAppsignal",
+      source_url: "https://github.com/conduitframework/conduit_appsignal",
+      homepage_url: "https://hexdocs.pm/conduit/conduit_appsignal",
+      docs: docs(),
+
+      # Package
+      description: "A plug to add Appsignal instrumentation to your conduit pipelines.",
+      package: package(),
+
+      aliases: ["publish": ["hex.publish", &git_tag/1]]
+    ]
   end
 
   # Configuration for the OTP application
@@ -30,7 +44,34 @@ defmodule ConduitAppsignal.Mixfile do
   defp deps do
     [
       {:conduit, "~> 0.8.0"},
-      {:appsignal, "~> 1.2"}
+      {:appsignal, "~> 1.2"},
+      {:ex_doc, "~> 0.14", only: :dev}
     ]
+  end
+
+  defp package do
+    [# These are the default files included in the package
+      name: :conduit_amqp,
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Allen Madsen"],
+      licenses: ["Apache 2.0"],
+      links: %{"GitHub" => "https://github.com/conduitframework/conduit_appsignal",
+                "Docs" => "https://hexdocs.pm/conduit_appsignal"}
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      project: "ConduitAppsignal",
+      extra_section: "Guides",
+      extras: ["README.md"]
+    ]
+  end
+
+  defp git_tag(_args) do
+    tag = "v" <> Mix.Project.config[:version]
+    System.cmd("git", ["tag", tag])
+    System.cmd("git", ["push", "origin", tag])
   end
 end
