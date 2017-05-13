@@ -52,7 +52,7 @@ defmodule ConduitAppsignal.Mixfile do
   defp package do
     [# These are the default files included in the package
       name: :conduit_amqp,
-      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      files: ["lib", "mix.exs", "README*"],
       maintainers: ["Allen Madsen"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/conduitframework/conduit_appsignal",
