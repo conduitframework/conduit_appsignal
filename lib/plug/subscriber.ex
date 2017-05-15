@@ -14,7 +14,7 @@ defmodule ConduitAppsignal.Plug.Subscriber do
       end
   """
 
-  def opts([subscriber: subscriber]) do
+  def init([subscriber: subscriber]) do
     Macro.to_string(subscriber)
   end
 
