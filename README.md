@@ -15,7 +15,8 @@ end
 
 ## Usage
 
-In your broker, early in the pipeline, include the `ConduitAppsignal.Plug.Transaction`. In
+In your broker, early in an incoming pipeline, include the `ConduitAppsignal.Plug.Transaction`. Early
+in an outgoing pipeline include `ConduitAppsignal.Plug.Publish`
 
 ``` elixir
 # broker.ex
@@ -24,21 +25,30 @@ pipeline :in_tracking do
 end
 
 pipeline :out_tracking do
-  plug ConduitAppsignal.Plug.Event,
-    name: "message.publish",
-    title: "Sending message"
+  plug ConduitAppsignal.Plug.Publish
 end
 
 incoming MyApp do
   pipe_through [:in_tracking, :error_handling, :deserialize] # Include tracking early
 
-  # subscribes ..
+  # subscribes ...
 end
 
 outgoing do
   pipe_through [:out_tracking, :serialize] # Include tracking early
 
-  # publishes
+  # publishes ...
+end
+```
+
+In each subscriber:
+
+``` elixir
+defmodule MySubscriber do
+  use Conduit.Subscriber
+  use ConduitAppsignal.Subscriber
+
+  # ...
 end
 ```
 
