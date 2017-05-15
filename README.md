@@ -46,7 +46,7 @@ In each subscriber:
 ``` elixir
 defmodule MySubscriber do
   use Conduit.Subscriber
-  use ConduitAppsignal.Subscriber
+  plug ConduitAppsignal.Plug.Subscriber
 
   # ...
 end
