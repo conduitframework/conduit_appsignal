@@ -11,7 +11,7 @@ defmodule ConduitAppsignal.Subscriber do
   """
 
   @doc false
-  defmacrop __using__(_opts) do
+  defmacro __using__(_opts) do
     quote do
       import Appsignal.Instrumentation.Helpers, only: [instrument: 3]
 
