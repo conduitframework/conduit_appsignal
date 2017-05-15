@@ -1,5 +1,6 @@
 defmodule ConduitAppsignal.Plug.Subscriber do
   use Conduit.Plug.Builder
+  import Appsignal.Instrumentation.Helpers, only: [instrument: 3]
   @moduledoc """
   Instruments the process function of your subscriber.
 
@@ -7,14 +8,18 @@ defmodule ConduitAppsignal.Plug.Subscriber do
 
       defmodule MySubscriber do
         use Conduit.Subscriber
-        plug ConduitAppsignal.Plug.Subscriber
+        plug ConduitAppsignal.Plug.Subscriber, subscriber: __MODULE__
 
         # ...
       end
   """
 
-  def call(message, next, _opts) do
-    action = "#{Macro.to_string(__MODULE__)}.process"
+  def opts([subscriber: subscriber]) do
+    Macro.to_string(subscriber)
+  end
+
+  def call(message, next, subscriber) do
+    action = "#{subscriber}.process"
     Appsignal.Transaction.set_action(action)
     instrument("message.process", action, fn ->
       next.(message)
