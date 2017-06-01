@@ -11,7 +11,7 @@ defmodule ConduitAppsignal.Plug.CaptureError do
   def call(message, next, _opts) do
     next.(message)
   rescue error ->
-    error = Exception.normalize(error)
+    error = Exception.normalize(:error, error)
     name = inspect(error.__struct__)
     message = Exception.message(error)
     stacktrace = System.stacktrace
