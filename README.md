@@ -17,7 +17,8 @@ end
 
 In your broker, early in an incoming pipeline, include the `ConduitAppsignal.Plug.Transaction`. Early
 in an outgoing pipeline include `ConduitAppsignal.Plug.Publish`. If you are using `Conduit.Plug.Retry`,
-add `ConduitAppsignal.Plug.Attempt` directly after it.
+add `ConduitAppsignal.Plug.Attempt` directly after it. If you want to capture errors, add
+`ConduitAppsignal.Plug.CaptureError` before anything that will handle exceptions, like `Conduit.Plug.AckException`.
 
 ``` elixir
 # broker.ex
@@ -34,6 +35,7 @@ pipeline :error_handling do
   plug Conduit.Plug.DeadLetter, broker: MiddleOut.Broker, publish_to: :error
   plug Conduit.Plug.Retry, attempts: 5
   plug ConduitAppsignal.Plug.Attempt
+  plug ConduitAppsignal.Plug.CaptureError
 end
 
 incoming MyApp do
