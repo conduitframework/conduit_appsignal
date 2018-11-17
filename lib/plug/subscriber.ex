@@ -14,12 +14,12 @@ defmodule ConduitAppsignal.Plug.Subscriber do
       end
   """
 
-  def init([subscriber: subscriber]) do
-    Macro.to_string(subscriber)
+  def init([subscriber: _] = opts) do
+    opts
   end
 
-  def call(message, next, subscriber) do
-    action = "#{subscriber}.process"
+  def call(message, next, opts) do
+    action = "#{inspect(opts[:subscriber])}.process"
     Appsignal.Transaction.set_action(action)
     instrument("message.process", action, fn ->
       next.(message)
