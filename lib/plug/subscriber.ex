@@ -29,28 +29,17 @@ defmodule ConduitAppsignal.Plug.Subscriber do
       message_id: message.message_id
     }
 
-    environment =
-      Map.merge(
-        %{
-          content_type: message.content_type,
-          content_encoding: message.content_encoding,
-          created_by: message.created_by,
-          created_at: message.created_at
-        },
-        message.headers
-      )
-
-    custom = %{
-      assigns: message.assigns,
-      private: message.private
+    environment = %{
+      content_type: message.content_type,
+      content_encoding: message.content_encoding,
+      created_by: message.created_by,
+      created_at: message.created_at
     }
     
     action
     |> Appsignal.Transaction.set_action()
     |> Appsignal.Transaction.set_sample_data("environment", environment)
     |> Appsignal.Transaction.set_sample_data("tags", tags)
-    |> Appsignal.Transaction.set_sample_data("params", message.body)
-    |> Appsignal.Transaction.set_sample_data("custom_data", custom)
 
     instrument("message.process", action, fn ->
       next.(message)
