@@ -6,8 +6,8 @@ defmodule ConduitAppsignal.Mixfile do
       app: :conduit_appsignal,
       version: "0.6.2",
       elixir: "~> 1.4",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps(),
 
       # Docs
@@ -19,8 +19,7 @@ defmodule ConduitAppsignal.Mixfile do
       # Package
       description: "A plug to add Appsignal instrumentation to your conduit pipelines.",
       package: package(),
-
-      aliases: ["publish": ["hex.publish", &git_tag/1]]
+      aliases: [publish: ["hex.publish", &git_tag/1]]
     ]
   end
 
@@ -50,13 +49,16 @@ defmodule ConduitAppsignal.Mixfile do
   end
 
   defp package do
-    [# These are the default files included in the package
+    # These are the default files included in the package
+    [
       name: :conduit_appsignal,
       files: ["lib", "mix.exs", "README*"],
       maintainers: ["Allen Madsen"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/conduitframework/conduit_appsignal",
-                "Docs" => "https://hexdocs.pm/conduit_appsignal"}
+      links: %{
+        "GitHub" => "https://github.com/conduitframework/conduit_appsignal",
+        "Docs" => "https://hexdocs.pm/conduit_appsignal"
+      }
     ]
   end
 
@@ -70,7 +72,7 @@ defmodule ConduitAppsignal.Mixfile do
   end
 
   defp git_tag(_args) do
-    tag = "v" <> Mix.Project.config[:version]
+    tag = "v" <> Mix.Project.config()[:version]
     System.cmd("git", ["tag", tag])
     System.cmd("git", ["push", "origin", tag])
   end
