@@ -9,7 +9,7 @@ by adding `conduit_appsignal` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:conduit_appsignal, "~> 0.1.0"}]
+  [{:conduit_appsignal, "~> 0.6.3"}]
 end
 ```
 
