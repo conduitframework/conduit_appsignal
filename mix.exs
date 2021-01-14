@@ -43,7 +43,7 @@ defmodule ConduitAppsignal.Mixfile do
   defp deps do
     [
       {:conduit, "~> 0.8"},
-      {:appsignal, "~> 1.2"},
+      {:appsignal, "~> 2.0"},
       {:ex_doc, "~> 0.14", only: :dev}
     ]
   end
